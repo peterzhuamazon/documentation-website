@@ -1,22 +1,17 @@
 name: Delete merged branch of the backport PRs
 on: 
-#  push:
-#    branches:
-#      - "testmain-patch"
   pull_request:
-
-#  pull_request:
-#    types:
-#      - closed
+    types:
+      - closed
   
 jobs:
   delete-branch:
     runs-on: ubuntu-latest
-    #if: startsWith(github.event.pull_request.head.repo.,'backport/')
+    if: startsWith(github.event.pull_request.head.repo.full_name, 'peterzhuamazon/documentation-website')
     steps:
-      - name: Test
-        run: echo ${{github.event.pull_request.head.repo.full_name}}
-#      - name: Delete merged branch
-#        uses: SvanBoxel/delete-merged-branch@main
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Echo remove branch
+        run: echo Removing ${{github.event.pull_request.head.ref}}
+      - name: Delete merged branch
+        uses: SvanBoxel/delete-merged-branch@main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
