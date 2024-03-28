@@ -15,7 +15,7 @@ jobs:
     #if: startsWith(github.event.pull_request.head.repo.,'backport/')
     steps:
       - name: Test
-        run: echo ${{github.event.pull_request.head.ref}}
+        run: echo ${{github.event.pull_request.head.repo.full_name}}
 #      - name: Delete merged branch
 #        uses: SvanBoxel/delete-merged-branch@main
 #        env:
