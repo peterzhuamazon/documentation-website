@@ -7,8 +7,10 @@ on:
 jobs:
   delete-branch:
     runs-on: ubuntu-latest
-    if: startsWith(github.event.pull_request.head.ref,'backport/')
+    if: startsWith(github.event.pull_request.head.repo.full_name, 'peterzhuamazon/documentation-website')
     steps:
+      - name: Echo remove branch
+        run: echo Removing ${{github.event.pull_request.head.ref}}
       - name: Delete merged branch
         uses: SvanBoxel/delete-merged-branch@main
         env:
