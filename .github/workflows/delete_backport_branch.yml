@@ -1,7 +1,8 @@
 name: Delete merged branch of the backport PRs
 on: 
   push:
-    - "testmain-patch"
+    branches:
+      - "testmain-patch"
 #  pull_request:
 #    types:
 #      - closed
