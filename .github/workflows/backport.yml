@@ -31,10 +31,19 @@ jobs:
           app_id: ${{ secrets.APP_ID }}
           private_key: ${{ secrets.APP_PRIVATE_KEY }}
           # opensearch-trigger-bot installation ID
-          installation_id: 22958780
+          #installation_id: 22958780
 
       - name: Backport
         uses: VachaShah/backport@v2.1.0
         with:
           github_token: ${{ steps.github_app_token.outputs.token }}
           head_template: backport/backport-<%= number %>-to-<%= base %>
+
+      - name: Label new backport PR with backport-automerge label
+        run: |
+          PR_BRANCH=backport/backport-<%= number %>-to-<%= base %>
+          PR_NUMBER=`gh pr list -R peterzhuamazon/documentation-website --json "number,headRefName" --state open | jq -r ".[] | select(.headRefName == \"$PR_BRANCH\") | .number"`
+          echo "Update Backport PR #$PR_NUMBER on branch $PR_BRANCH with backport-automerge label"
+          gh issue edit -R peterzhuamazon/documentation-website $PR_NUMBER --add-label backport-automerge
+        env:
+          GH_TOKEN: ${{ steps.github_app_token.outputs.token }}
