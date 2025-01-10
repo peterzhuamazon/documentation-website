@@ -3,9 +3,9 @@ name: Jekyll Production Publishing
 on:
   push:
     branches:
-      - '2.18'
-      - '2.17'
-      - '1.3'
+      - 2.18
+      - 2.17
+      - 1.3
   workflow_dispatch:
     inputs:
       manual_deploy_branch:
