@@ -40,7 +40,6 @@ jobs:
         bundler-cache: true
     - name: Jekyll Build $GITHUB_REF_NAME
       run: |
-        bundle install
         echo GITHUB_REF_NAME $GITHUB_REF_NAME
 
         if [ "$GITHUB_REF_NAME" = "$LATEST_VERSION" ]; then
@@ -51,6 +50,7 @@ jobs:
 
         mkdir -p $SITE_DIR
         cd docs
+        bundle install
         CURRENT_VERSION=$(jq -r '.current' _data/versions.json)
         DESTINATION_KEY="/$CURRENT_VERSION"
         sed -i -e "s|baseurl:.*$|baseurl:\ \"$DESTINATION_KEY\"|g" _config.yml
