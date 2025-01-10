@@ -40,6 +40,7 @@ jobs:
         bundler-cache: true
     - name: Jekyll Build $GITHUB_REF_NAME
       run: |
+        bundle install
         echo GITHUB_REF_NAME $GITHUB_REF_NAME
 
         if [ "$GITHUB_REF_NAME" = "$LATEST_VERSION" ]; then
