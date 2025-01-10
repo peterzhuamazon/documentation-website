@@ -1,0 +1,21 @@
+name: Jekyll Production Publishing
+
+on:
+  push:
+    branches:
+      - main
+      - '2.18'
+      - '2.17'
+      - '1.3'
+
+jobs:
+  jekyll-publish:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    #- uses: ruby/setup-ruby@v1
+    #  with:
+    #    ruby-version: '3.2'
+    #    bundler-cache: true
+    - run: echo GITHUB_REF_NAME $GITHUB_REF_NAME
