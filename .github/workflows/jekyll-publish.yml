@@ -9,9 +9,6 @@ on:
         required: true
         default: ''
 
-env:
-  LATEST_VERSION: '2.18'
-
 permissions:
   contents: write
 
@@ -35,6 +32,9 @@ jobs:
       run: |
         echo ${{ github.event.inputs.manual_deploy_branch }}
         echo GITHUB_REF_NAME $GITHUB_REF_NAME
+
+        LATEST_VERSION=$(jq -r '.current' _data/versions.json)
+        echo LATEST_VERSION $LATEST_VERSION
 
         if [ "$GITHUB_REF_NAME" = "$LATEST_VERSION" ]; then
             SITE_DIR="$PWD/site/latest"
