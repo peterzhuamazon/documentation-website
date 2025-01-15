@@ -32,8 +32,6 @@ jobs:
     - name: echo concurrency group
       run: echo ${{ github.workflow }}-${{ github.event.inputs.manual_deploy_branch }}
     - uses: actions/checkout@v4
-      with:
-        path: docs
     - uses: ruby/setup-ruby@v1
       with:
         ruby-version: '3.2'
@@ -49,7 +47,6 @@ jobs:
         fi
 
         mkdir -p $SITE_DIR
-        cd docs
         bundle install
         CURRENT_VERSION=$(jq -r '.current' _data/versions.json)
         DESTINATION_KEY="/$CURRENT_VERSION"
