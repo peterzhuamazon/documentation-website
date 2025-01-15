@@ -45,13 +45,13 @@ jobs:
         fi
 
         mkdir -p $SITE_DIR
+        touch .nojekyll site
         bundle install
         CURRENT_VERSION=$(jq -r '.current' _data/versions.json)
         DESTINATION_KEY="/$CURRENT_VERSION"
         sed -i -e "s|baseurl:.*$|baseurl:\ \"$DESTINATION_KEY\"|g" _config.yml
         curl -s -f -o _data/alert.yml https://raw.githubusercontent.com/opensearch-project/project-website/prod/_data/alert.yml || rm -rf _data/alert.yml
         bundle exec jekyll build --trace
-        touch .nojekyll _site
         cp -a _site/* $SITE_DIR/
     - name: Deploy GitHub Pages
       uses: JamesIves/github-pages-deploy-action@releases/v4
