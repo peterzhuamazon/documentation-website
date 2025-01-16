@@ -1,0 +1,14 @@
+{"0": {
+    "doc": "Home",
+    "title": "Home",
+    "content": "OpenSearch Documentation Learn to use OpenSearch, the highly scalable and extensible open-source software suite for search, analytics, observability, and other data-intensive applications. Contribute . Explore OpenSearch documentation . OpenSearch and OpenSearch Dashboards . Build your OpenSearch solution using core tooling and visualizations . Documentation &#x2192; . Data Prepper . Filter, mutate, and sample your data for ingestion into OpenSearch . Documentation &#x2192; . Clients . Interact with OpenSearch from your application using language APIs . Documentation &#x2192; . OpenSearch Benchmark . Measure performance metrics for your OpenSearch cluster . Documentation &#x2192; . ",
+    "url": "https://docsstaging.opensearch.net/docs/1.3/",
+    "relUrl": "/"
+  },"1": {
+    "doc": "OpenSearch Documentation Search Results Page",
+    "title": "OpenSearch Documentation Search Results Page",
+    "content": "OpenSearch Documentation Learn to use OpenSearch, the highly scalable and extensible open-source software suite for search, analytics, observability, and other data-intensive applications. Contribute . Explore OpenSearch documentation . OpenSearch and OpenSearch Dashboards . Build your OpenSearch solution using core tooling and visualizations . Documentation &#x2192; . Data Prepper . Filter, mutate, and sample your data for ingestion into OpenSearch . Documentation &#x2192; . Clients . Interact with OpenSearch from your application using language APIs . Documentation &#x2192; . OpenSearch Benchmark . Measure performance metrics for your OpenSearch cluster . Documentation &#x2192; . ",
+    "url": "https://docsstaging.opensearch.net/docs/1.3/search.html",
+    "relUrl": "/search.html"
+  }
+}
