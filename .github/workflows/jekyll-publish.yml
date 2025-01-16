@@ -8,7 +8,6 @@ on:
         description: "Which branch do you want to manually deploy"
         type: string
         required: true
-        default: ''
 
 permissions:
   contents: write
