@@ -6,4 +6,4 @@ jobs:
   Get-Require-Approval:
     uses: ./.github/workflows/jekyll-deploy.yml
     with:
-      auto_deploy_branch: ${{ git.ref_name }}
+      auto_deploy_branch: ${{ github.ref_name }}
