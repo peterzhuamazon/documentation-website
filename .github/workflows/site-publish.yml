@@ -1,0 +1,7 @@
+name: Publish Documentation Website
+on:
+  push:
+
+jobs:
+  site-publish:
+    uses: ./.github/workflows/jekyll-deploy.yml
