@@ -46,8 +46,7 @@ jobs:
         if [ "$DEPLOY_BRANCH" = "$LATEST_VERSION" ]; then
             destination_key="latest"
         elif [ "$DEPLOY_BRANCH" = ${{ github.event.repository.default_branch }} ]; then
-            #destination_key="staging"
-            destination_key="latest"
+            destination_key="staging"
         else
             destination_key="$DEPLOY_BRANCH"
         fi
