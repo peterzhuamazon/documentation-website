@@ -1,7 +1,6 @@
 name: Jekyll Production Publishing
 
 on:
-  push:
   workflow_dispatch:
     inputs:
       manual_deploy_branch:
