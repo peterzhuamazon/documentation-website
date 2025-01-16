@@ -15,6 +15,7 @@ permissions:
 # Temporary
 env:
   SITE_URL: https://docsstaging.opensearch.net
+  VERSIONS_JSON: https://raw.githubusercontent.com/peterzhuamazon/documentation-website/refs/heads/main/_data/versions.json
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.inputs.manual_deploy_branch || github.ref_name }}
@@ -38,8 +39,8 @@ jobs:
         bundler-cache: true
     - name: Jekyll Build ${{ env.DEPLOY_BRANCH }}
       run: |
-
-        LATEST_VERSION=$(jq -r '.current' _data/versions.json)
+        curl -SLO $VERSIONS_JSON
+        LATEST_VERSION=$(jq -r '.current' ./versions.json)
         echo LATEST_VERSION $LATEST_VERSION
 
         if [ "$DEPLOY_BRANCH" = "$LATEST_VERSION" ]; then
@@ -52,7 +53,7 @@ jobs:
         fi
 
         echo "DESTINATION_KEY=$destination_key" >> $GITHUB_ENV
-        echo DESTINATION_KEY $DESTINATION_KEY
+        echo DESTINATION_KEY $destination_key
 
         bundle install
         CURRENT_VERSION=$(jq -r '.current' _data/versions.json)
