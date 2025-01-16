@@ -1,4 +1,4 @@
-name: Jekyll Production Publishing
+name: Jekyll Deploy
 
 on:
   workflow_dispatch:
@@ -26,7 +26,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  jekyll-publish:
+  jekyll-deploy:
     runs-on: ubuntu-latest
 
     steps:
