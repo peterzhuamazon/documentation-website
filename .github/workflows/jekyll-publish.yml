@@ -7,6 +7,11 @@ on:
         description: "Which branch do you want to manually deploy"
         type: string
         required: true
+  workflow_call:
+    inputs:
+      auto_deploy_branch:
+        required: true
+        type: string
 
 permissions:
   contents: write
@@ -14,9 +19,10 @@ permissions:
 # Temporary
 env:
   SITE_URL: https://docsstaging.opensearch.net
+  DEPLOY_BRANCH: ${{ github.event.inputs.manual_deploy_branch || github.event.inputs.auto_deploy_branch }}
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.inputs.manual_deploy_branch || github.ref_name }}
+  group: ${{ github.workflow }}-${{ env.DEPLOY_BRANCH }}
   cancel-in-progress: true
 
 jobs:
@@ -25,30 +31,31 @@ jobs:
 
     steps:
     - name: echo concurrency group
-      run: echo ${{ github.workflow }}-${{ github.event.inputs.manual_deploy_branch || github.ref_name }}
+      run: echo ${{ github.workflow }}-${{ env.DEPLOY_BRANCH }}
     - uses: actions/checkout@v4
     - uses: ruby/setup-ruby@v1
       with:
         ruby-version: '3.2'
         bundler-cache: true
-    - name: Jekyll Build ${{ github.ref_name }}
+    - name: Jekyll Build ${{ env.DEPLOY_BRANCH }}
       run: |
         echo ${{ github.event.inputs.manual_deploy_branch }}
-        echo GITHUB_REF_NAME ${{ github.ref_name }}
+        echo GITHUB_REF_NAME ${{ env.DEPLOY_BRANCH }}
 
         LATEST_VERSION=$(jq -r '.current' _data/versions.json)
         echo LATEST_VERSION $LATEST_VERSION
 
-        if [ "${{ github.ref_name }}" = "$LATEST_VERSION" ]; then
+        if [ "${{ env.DEPLOY_BRANCH }}" = "$LATEST_VERSION" ]; then
             DESTINATION_KEY="latest"
-        elif [ "${{ github.ref_name }}" = ${{ github.event.repository.default_branch }} ]; then
+        elif [ "${{ env.DEPLOY_BRANCH }}" = ${{ github.event.repository.default_branch }} ]; then
             #DESTINATION_KEY="staging"
             DESTINATION_KEY="latest"
         else
-            DESTINATION_KEY="${{ github.ref_name }}"
+            DESTINATION_KEY="${{ env.DEPLOY_BRANCH }}"
         fi
 
         echo "DESTINATION_KEY_ENV=$DESTINATION_KEY" >> $GITHUB_ENV
+        echo ${{ env.DESTINATION_KEY_ENV }}
         bundle install
         CURRENT_VERSION=$(jq -r '.current' _data/versions.json)
         sed -i -e "s|^url:.*$|url:\ \"$SITE_URL\"|g" _config.yml
