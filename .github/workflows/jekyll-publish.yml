@@ -39,7 +39,8 @@ jobs:
         if [ "$GITHUB_REF_NAME" = "$LATEST_VERSION" ]; then
             DESTINATION_KEY="latest"
         elif [ "$GITHUB_REF_NAME" = ${{ github.event.repository.default_branch }} ]; then
-            DESTINATION_KEY="staging"
+            #DESTINATION_KEY="staging"
+            DESTINATION_KEY="latest"
         else
             DESTINATION_KEY="$GITHUB_REF_NAME"
         fi
@@ -47,7 +48,7 @@ jobs:
         echo "DESTINATION_KEY_ENV=$DESTINATION_KEY" >> $GITHUB_ENV
         bundle install
         CURRENT_VERSION=$(jq -r '.current' _data/versions.json)
-        sed -i -e "s|baseurl:.*$|baseurl:\ \"$DESTINATION_KEY\"|g" _config.yml
+        sed -i -e "s|baseurl:.*$|baseurl:\ \"/docs/$DESTINATION_KEY\"|g" _config.yml
         curl -s -f -o _data/alert.yml https://raw.githubusercontent.com/opensearch-project/project-website/prod/_data/alert.yml || rm -rf _data/alert.yml
         bundle exec jekyll build --trace
         ls -l _site
@@ -58,4 +59,4 @@ jobs:
         branch: gh-pages
         folder: _site
         clean: true
-        target-folder: ${{ env.DESTINATION_KEY_ENV }}
+        target-folder: docs/${{ env.DESTINATION_KEY_ENV }}
