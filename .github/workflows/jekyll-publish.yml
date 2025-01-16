@@ -37,24 +37,25 @@ jobs:
         echo LATEST_VERSION $LATEST_VERSION
 
         if [ "$GITHUB_REF_NAME" = "$LATEST_VERSION" ]; then
-            SITE_DIR="$PWD/site/latest"
+            DESTINATION_KEY="latest"
         elif [ "$GITHUB_REF_NAME" = ${{ github.event.repository.default_branch }} ]; then
-            SITE_DIR="$PWD/site/staging"
+            DESTINATION_KEY="staging"
         else
-            SITE_DIR="$PWD/site/$GITHUB_REF_NAME"
+            DESTINATION_KEY="$GITHUB_REF_NAME"
         fi
 
-        mkdir -p $SITE_DIR
-        touch .nojekyll site
+        echo "DESTINATION_KEY_ENV=$DESTINATION_KEY" >> $GITHUB_ENV
         bundle install
         CURRENT_VERSION=$(jq -r '.current' _data/versions.json)
-        DESTINATION_KEY="/$CURRENT_VERSION"
         sed -i -e "s|baseurl:.*$|baseurl:\ \"$DESTINATION_KEY\"|g" _config.yml
         curl -s -f -o _data/alert.yml https://raw.githubusercontent.com/opensearch-project/project-website/prod/_data/alert.yml || rm -rf _data/alert.yml
         bundle exec jekyll build --trace
-        cp -a _site/* $SITE_DIR/
+        ls -l _site
+        cat _config.yml | grep baseurl
     - name: Deploy GitHub Pages
       uses: JamesIves/github-pages-deploy-action@releases/v4
       with:
         branch: gh-pages
-        folder: site
+        folder: _site
+        clean: true
+        target-folder: ${{ env.DESTINATION_KEY_ENV }}
