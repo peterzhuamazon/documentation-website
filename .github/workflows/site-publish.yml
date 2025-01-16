@@ -4,4 +4,4 @@ on:
 
 jobs:
   site-publish:
-    uses: ./.github/workflows/jekyll-deploy.yml
+    uses: peterzhuamazon/documentation-website/.github/workflows/jekyll-deploy.yml@main
