@@ -12,6 +12,9 @@ on:
 permissions:
   contents: write
 
+env:
+  SITE_URL: https://docsstaging.opensearch.net
+
 concurrency:
   group: ${{ github.workflow }}--${{ github.event.inputs.manual_deploy_branch }}
   cancel-in-progress: true
@@ -48,6 +51,7 @@ jobs:
         echo "DESTINATION_KEY_ENV=$DESTINATION_KEY" >> $GITHUB_ENV
         bundle install
         CURRENT_VERSION=$(jq -r '.current' _data/versions.json)
+        sed -i -e "s|url:.*$|url:\ \"$SITE_URL\"|g" _config.yml
         sed -i -e "s|baseurl:.*$|baseurl:\ \"/docs/$DESTINATION_KEY\"|g" _config.yml
         curl -s -f -o _data/alert.yml https://raw.githubusercontent.com/opensearch-project/project-website/prod/_data/alert.yml || rm -rf _data/alert.yml
         bundle exec jekyll build --trace
