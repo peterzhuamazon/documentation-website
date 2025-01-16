@@ -1,15 +1,17 @@
 (() => {
 
-const DOC_VERSIONS = ["2.4","2.3","2.2","2.1","2.0","1.3","1.2","1.1","1.0"];
+const DOC_VERSIONS = ["2.18","1.3"];
+const DOC_VERSIONS_ARCHIVED = ["2.17","2.16","2.15","2.14","2.13","2.12","2.11","2.10","2.9","2.8","2.7","2.6","2.5","2.4","2.3","2.2","2.1","2.0","1.2","1.1","1.0"];
 
-const DOC_VERSION_LATEST = "2.4";
+const DOC_VERSION_LATEST = "2.18";
 
 /* During build, DOC_VERSIONS is prefixed to convey all the versions available, informed by `_data/versions.json`
  * Example:
- *    const DOC_VERSIONS = ["1.1","1.0"];
+ *    const DOC_VERSIONS = ["2.1","1.1"];
+ *    const DOC_VERSIONS_ARCHIVED = ["2.0","1.0"];
  *
  * DOC_VERSION_LATEST will pick `latest`, or in its absence the `current` version.
- *    const DOC_VERSION_LATEST = "2.0";
+ *    const DOC_VERSION_LATEST = "2.1";
  */
 const PREFIX = "OpenSearch ";
 const tpl = `
@@ -114,6 +116,7 @@ const tpl = `
         text-decoration: none;
         color: var(--link-color);
         position: relative;
+        line-height: 1.6em;
     }
     
     #dropdown > a:last-child {
@@ -133,6 +136,38 @@ const tpl = `
         top: 50%;
         transform: translateY(-50%);
         color: #999;
+    }
+    
+    #spacer > a.archived,
+    #spacer > a.show-archived,
+    #dropdown > a.archived,
+    #dropdown > a.show-archived {
+        font-size: .8em;
+        text-transform: uppercase;
+        color: #999;
+        font-weight: 700;
+        line-height: 2em;
+        display: flex;
+        align-items: center;
+        padding-top: .375em;
+        padding-bottom: .375em;
+        padding-left: calc(1.25em - 1px);
+        gap: .3em;
+        cursor: pointer;
+    }
+    
+    #dropdown > a.show-archived {
+        border: 0;
+    }
+    
+    #dropdown > a.show-archived ~ a,
+    #dropdown > a.show-archived[aria-expanded="true"] {
+        display: none;
+        cursor: unset;
+    }
+    
+    #dropdown > a.show-archived[aria-expanded="true"] ~ a {
+        display: block;
     }
     </style>
     <a id="root" role="button" aria-labelledby="selected" aria-controls="dropdown" tabindex="0">
@@ -164,7 +199,10 @@ class VersionSelector extends HTMLElement {
         frag.querySelector('#selected').textContent = `${PREFIX}${this.getAttribute('selected')}`;
 
         const pathName = location.pathname.replace(/\/docs(\/((latest|\d+\.\d+)\/?)?)?/, '');
-        const versionsDOMNodes = DOC_VERSIONS.map((v, idx) => `<a href="/docs/${v}/${pathName}"${v === DOC_VERSION_LATEST ? ' class="latest"' : ''}>${PREFIX}${v}</a>`);
+        const versionsDOMNodes = DOC_VERSIONS.map((v, idx) => v === DOC_VERSION_LATEST
+          ? `<a href="/docs/latest/${pathName}" class="latest">${PREFIX}${v}</a>`
+          : `<a href="/docs/${v}/${pathName}">${PREFIX}${v}</a>`,
+        );
         if (Array.isArray(DOC_VERSIONS_ARCHIVED) && DOC_VERSIONS_ARCHIVED.length) {
             versionsDOMNodes.push(
                 `<a class="show-archived"><span>Show archived</span><svg xmlns="http://www.w3.org/2000/svg" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6l6-6"/></g></svg></a>`,
@@ -188,6 +226,11 @@ class VersionSelector extends HTMLElement {
             this._expand(this.getAttribute('aria-expanded') !== 'true');
         });
 
+        const showNode = shadowRoot.querySelector('#dropdown .show-archived');
+        showNode?.addEventListener('click', e => {
+            showNode.setAttribute('aria-expanded', 'true');
+        });
+
         /* On some devices, `blur` is fired on the component before navigation occurs when choosing a version from the
          * dropdown; this ends up hiding the dropdown and preventing the navigation. The `pointerup` on the anchor
          * element is always fired before the `blur` is dispatched on the component and that is used here to trigger
@@ -195,6 +238,7 @@ class VersionSelector extends HTMLElement {
          */
         shadowRoot.querySelector('#dropdown').addEventListener('pointerup', e => {
             const {target} = e;
+            e.preventDefault();
             if (target.matches('a[href]') && target.href) document.location.href = target.href;
         });
     }
@@ -210,4 +254,5 @@ class VersionSelector extends HTMLElement {
 }
 
 customElements.define('version-selector', VersionSelector);
+
 })();
