@@ -1,1 +1,0 @@
-Sitemap: https://docsstaging.opensearch.net/docs/latest/sitemap.xml
