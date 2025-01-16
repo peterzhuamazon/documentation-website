@@ -22,7 +22,7 @@ env:
   DEPLOY_BRANCH: ${{ github.event.inputs.manual_deploy_branch || github.event.inputs.auto_deploy_branch }}
 
 concurrency:
-  group: ${{ github.workflow }}-${{ env.DEPLOY_BRANCH }}
+  group: ${{ github.workflow }}-${{ github.event.inputs.manual_deploy_branch || github.event.inputs.auto_deploy_branch }}
   cancel-in-progress: true
 
 jobs:
@@ -32,6 +32,8 @@ jobs:
     steps:
     - name: echo concurrency group
       run: echo ${{ github.workflow }}-${{ env.DEPLOY_BRANCH }}
+    - name: echo deploy branch
+      run: echo ${{ env.DEPLOY_BRANCH }}
     - uses: actions/checkout@v4
     - uses: ruby/setup-ruby@v1
       with:
