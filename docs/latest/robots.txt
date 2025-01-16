@@ -1,1 +1,1 @@
-Sitemap: https://opensearch.org/docs/latest/sitemap.xml
+Sitemap: https://docsstaging.opensearch.net/docs/latest/sitemap.xml
