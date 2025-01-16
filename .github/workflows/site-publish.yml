@@ -2,6 +2,10 @@ name: Publish Documentation Website
 on:
   push:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref_name }}
+  cancel-in-progress: true
+
 jobs:
-  Get-Require-Approval:
+  site-publish:
     uses: ./.github/workflows/jekyll-deploy.yml
