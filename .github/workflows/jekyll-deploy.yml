@@ -71,7 +71,7 @@ jobs:
         clean: true
         target-folder: docs/${{ env.DESTINATION_KEY }}
     - name: Deploy GitHub Pages (Latest)
-      if: ${{ env.DESTINATION_KEY }} == 'latest'
+      if: env.DESTINATION_KEY == 'latest'
       uses: JamesIves/github-pages-deploy-action@releases/v4
       with:
         branch: gh-pages
