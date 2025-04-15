@@ -59,7 +59,7 @@ jtd.getTheme = function() {
 
 jtd.setTheme = function(theme) {
   var cssFile = document.querySelector('[rel="stylesheet"]');
-  cssFile.setAttribute('href', 'https://docsstaging.opensearch.net/docs/1.3/assets/css/just-the-docs-' + theme + '.css');
+  cssFile.setAttribute('href', 'https://opendocs.jzhucs.com/docs/1.3/assets/css/just-the-docs-' + theme + '.css');
 }
 
 // Document ready
