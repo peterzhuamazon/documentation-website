@@ -1,1 +1,1 @@
-Sitemap: https://docsstaging.opensearch.net/docs/staging/sitemap.xml
+Sitemap: https://opendocs.jzhucs.com/docs/staging/sitemap.xml
