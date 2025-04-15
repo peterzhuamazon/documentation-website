@@ -14,7 +14,7 @@ permissions:
 
 # Temporary
 env:
-  SITE_URL: https://docsstaging.opensearch.net
+  SITE_URL: https://opendocs.jzhucs.com
   VERSIONS_JSON: https://raw.githubusercontent.com/peterzhuamazon/documentation-website/refs/heads/main/_data/versions.json
 
 concurrency:
@@ -70,7 +70,7 @@ jobs:
         folder: _site
         clean: true
         target-folder: docs/${{ env.DESTINATION_KEY }}
-    - name: Deploy GitHub Pages (Latest)
+    - name: Deploy GitHub Pages (Latest own branch)
       if: env.DESTINATION_KEY == 'latest'
       uses: JamesIves/github-pages-deploy-action@releases/v4
       with:
