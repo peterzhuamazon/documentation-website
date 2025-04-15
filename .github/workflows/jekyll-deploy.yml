@@ -32,7 +32,10 @@ jobs:
         echo "DEPLOY_BRANCH=$deploy_branch" >> $GITHUB_ENV
         echo DEPLOY_BRANCH $deploy_branch
         echo concurrent group ${{ github.workflow }}-$deploy_branch
-    - uses: actions/checkout@v4
+    - name: Checkout Ref ${{ env.DEPLOY_BRANCH }}
+      uses: actions/checkout@v4
+      with:
+        ref: ${{ env.DEPLOY_BRANCH }}
     - uses: ruby/setup-ruby@v1
       with:
         ruby-version: '3.2'
