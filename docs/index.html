@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <script>
+      const path = window.location.pathname;
+      const isDocsDir = path === '/docs' || path === '/docs/';
+      const inLatest = path.startsWith('/docs/latest');
+
+      if (isDocsDir && !inLatest) {
+        window.location.replace('/docs/latest');
+      }
+  </script>
+</head>
+<body></body>
+</html>
